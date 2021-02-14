@@ -28,8 +28,6 @@ jobs:
     - run: uname -a
     - run: ls /bin
     - run: ls /dev
-    - run: ls /proc
-    - run  dpkg --get-selections
     - run: npm --version
     - run: npm ls
     - run: npm test
