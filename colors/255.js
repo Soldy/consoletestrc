@@ -2,7 +2,30 @@
  *  @Soldy\consoletestrc\2021.02.07\GPL3
  */
 'use strict';
+const reset = (require('./reset.js')).reset;
 
+const ansi255 = (color) => {
+    return (
+        "\u001b[38;5;"+
+        color.toString()+
+        "m"
+    );
+};
+const back255 = (color) => {
+    return (
+        "\u001b[48"+
+        color.toString()+
+        "m"
+    );
+};
+const text255 = (color, text, back_color) => {
+    return (
+         ansi255(color)+
+         back255(back_color)+
+         text+
+         reset()
+    );
+};
 /*
  * @prototype
  */
@@ -16,35 +39,35 @@ const color255Base = function(){
         let out = '\n';
         let a = 0;
         for(let i = 0 ; 16 > i ; i++)
-            out += "\u001b[38;5;"+i.toString()+"mO";
+            out += text255(i,'0',0);
         out += "\n";
         for(let i = 16 ; 232 > i ; i++){
-            out += "\u001b[38;5;"+i.toString()+"mO";
+            out += text255(i,'0',0);
             if(a === 35){
                 out += "\n";
                 a = 0;
             }else 
                 a++
         }
-        out += "\u001b[0m \n";
+        out += "\n";
         for(let i = 232 ; 256 > i ; i++)
-            out += "\u001b[38;5;"+i.toString()+"mO";
-        out += "\u001b[0m \n\n";
+            out += text255(i,'0',0);
+        out += "\n";
         for(let i = 0 ; 16 > i ; i++)
-            out += "\u001b[48;5;"+i.toString()+"m ";
-        out += "\u001b[0m \n\n";
+            out += text255(0,'0',i);
+        out += "\n";
         for(let i = 16 ; 232 > i ; i++){
-            out += "\u001b[48;5;"+i.toString()+"m ";
+            out += text255(0,'0',i);
             if(a === 35){
                 out += "\n";
                 a = 0;
             }else 
                 a++
         }
-        out += "\u001b[0m \n";
+        out += "\n";
         for(let i = 232 ; 256 > i ; i++)
-            out += "\u001b[48;5;"+i.toString()+"m ";
-        out += "\u001b[0m \n\n";
+            out += text255(0,'0',i);
+        out += "\n";
         return out;
     }
 }

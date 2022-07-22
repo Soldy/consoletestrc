@@ -3,6 +3,39 @@
  */
 'use strict';
 
+const reset = (require('./reset.js')).reset;
+
+const ansi24bit = (red, green, blue) => {
+    return (
+        "\u001b[38;2;"+
+        red.toString()+
+        ";"+
+        green.toString()+
+        ";"+
+        blue.toString()+
+        "m"
+    );
+};
+const back24bit = (red, green, blue) => {
+    return  (
+        "\u001b[48;2;"+
+        red.toString()+
+        ";"+
+        green.toString()+
+        ";"+
+        blue.toString()+
+        "m"
+    );
+
+};
+const text24bit = (red, green, blue, text, back_red, back_green, back_blue) => {
+    return (
+         ansi24bit(red,green,blue)+
+         back24bit(back_red,back_green,back_blue)+
+         text+
+         reset()
+    );
+};
 /*
  * @prototype
  */
@@ -15,69 +48,29 @@ const color24BitBase = function(){
     const test = function (){
         let out = '\n';
         for(let i = 0 ; 256 > i ; i++)
-            out += (
-               "\u001b[38;2;"+
-               i.toString()+
-               ";0;0mO"
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(i,0,0,'0',0,0,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i++)
-            out += (
-                "\u001b[38;2;0;"+
-                i.toString()+
-                ";0mO"
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(0,i,0,'0',0,0,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i++)
-            out += (
-                "\u001b[38;2;0;0;"+
-                i.toString()+
-                "mO"
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(0,0,i,'0',0,0,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i++)
-            out += (
-                "\u001b[38;2;"+
-                i.toString()+
-                ";"+
-                i.toString()+
-                ";"+
-                i.toString()+
-                "mO"
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(i,i,i,'0',0,0,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i ++)
-            out += (
-                "\u001b[48;2;"+
-                i.toString()+
-                ";0;0m "
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(0,0,0,' ',i,0,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i ++)
-            out += (
-                "\u001b[48;2;0;"+
-                i.toString()+
-                ";0m "
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(0,0,0,' ',0,i,0);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i ++)
-            out += (
-                "\u001b[48;2;0;0;"+
-                i.toString()+
-                "m "
-            );
-        out += "\u001b[0m \n";
+            out += text24bit(0,0,0,' ',0,0,i);
+        out += "\n";
         for(let i = 0 ; 256 > i ; i++)
-            out += (
-                "\u001b[48;2;"+
-                i.toString()+
-                ";"+
-                i.toString()+
-                ";"+
-                i.toString()+
-                "m "
-            );
-        out += "\u001b[0m \n\n\n";
+            out += text24bit(0,0,0,' ',i,i,i);
+        out += "\n";
         return out;
     }
 }
